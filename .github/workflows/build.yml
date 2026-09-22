@@ -1,33 +1,40 @@
-name: Build Flutter App
+import 'package:flutter/material.dart';
 
-on:
-  push:
-    branches: [ "main" ]
+void main() {
+  runApp(const MyApp());
+}
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-    steps:
-      - uses: actions/checkout@v4
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'RPG Habit Quest',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.x'
-
-      - run: flutter pub get
-      - run: dart run build_runner build --delete-conflicting-outputs
-      - run: flutter build apk --release
-      - run: flutter build web --release
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('RPG Habit Quest'),
+      ),
+      body: const Center(
+        child: Text(
+          'Welcome to your Quest!',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+  }
+}
